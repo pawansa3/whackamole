@@ -60,17 +60,17 @@ const Game = (props) => {
 
     useEffect(() => {
         if (localStorage.getItem("playerName")) {
-            // if (totalCount - score > 5) {
-            //     timeUp.current = true
-            //     setMoleHolePosition(null)
-            //     firebaseDB.ref(`players/${localStorage.getItem("playerName")}`).set({ score }).then(res => {
-            //         console.log("playerName", localStorage.getItem("playerName"))
-            //         localStorage.removeItem("playerName")
-            //     }).catch(err => console.log("error", err))
-            //     return () => {
-            //         clearTimeout(timeout)
-            //     }
-            // }
+            if (totalCount - score > 5) {
+                timeUp.current = true
+                setMoleHolePosition(null)
+                firebaseDB.ref(`players/${localStorage.getItem("playerName")}`).set({ score }).then(res => {
+                    console.log("playerName", localStorage.getItem("playerName"))
+                    localStorage.removeItem("playerName")
+                }).catch(err => console.log("error", err))
+                return () => {
+                    clearTimeout(timeout)
+                }
+            }
             setTotalCount(prevCount => prevCount + 1)
         }
     }, [moleHolePosition])
