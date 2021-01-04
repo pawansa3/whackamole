@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { firebaseDB } from '../firebase'
 import Button from '../components/Button';
+import Tink from '../assets/tink.wav'
 
 const Game = (props) => {
     let timeout;
@@ -10,6 +11,7 @@ const Game = (props) => {
     const [moleHolePosition, setMoleHolePosition] = useState(0)
     const [lastHole, setLastHole] = useState(0)
     const timeUp = useRef(false);
+    const currentMole = useRef(null);
     // const totalmiss = useRef(0);
     const randomTime = (min, max) => {
         return Math.round(Math.random() * (max - min) + min);
@@ -31,7 +33,7 @@ const Game = (props) => {
     }
 
     const peep = async () => {
-        const time = randomTime(800, 1500);
+        const time = randomTime(1200, 1500);
         const hole = randomHole()
         setMoleHolePosition(hole)
         timeout = setTimeout(() => {
@@ -41,8 +43,16 @@ const Game = (props) => {
 
     const bonk = (e) => {
         if (!e.isTrusted) return;
-        e.target.parentNode.classList.remove('up');
-        setScore(prevScore => prevScore + 1);
+        if (currentMole.current === e.target) {
+            return console.log("double click")
+        } else {
+            currentMole.current = e.target
+            e.target.parentNode.classList.remove('up');
+            const audio = document.querySelector('audio');
+            audio.currentTime = 0;
+            audio.play();
+            setScore(prevScore => prevScore + 1);
+        }
     }
 
     useEffect(() => {
@@ -91,6 +101,7 @@ const Game = (props) => {
                         </div>
                     )
                 })}
+                <audio src={Tink}></audio>
             </div>
         </div>
     )
