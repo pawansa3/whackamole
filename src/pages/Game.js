@@ -33,7 +33,7 @@ const Game = (props) => {
     }
 
     const peep = async () => {
-        const time = randomTime(1200, 1500);
+        const time = randomTime(700, 1500);
         const hole = randomHole()
         setMoleHolePosition(hole)
         timeout = setTimeout(() => {
